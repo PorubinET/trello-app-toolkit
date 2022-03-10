@@ -5,7 +5,7 @@ import TrelloCard from "../trelloCards/trelloCard"
 import TrelloActionButton from "../TrelloActionButton/TrelloActionButton";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import {changeListTitle} from "../../store/listsSlice" // перекинуть в listsSlice 
+import {changeListTitle} from "../../store/listsSlice" 
 import styled from "styled-components"
 
 
@@ -20,7 +20,7 @@ const ListContainer = styled.div`
     margin-right: 8px;
   `;
 
-const TrelloList = ({ title, cards, _id, index, position }) => {
+const TrelloList = ({ title, cards, _id, index, position, email, name, time }) => {
   let [titleText, setTitle] = useState(title);
   const dispatch = useDispatch();
 
@@ -73,9 +73,13 @@ const TrelloList = ({ title, cards, _id, index, position }) => {
                       key={card.id}
                       text={card.text}
                       id={card.id}
+                      desc={card.description}
+                      listId={card.listId}
+                      time={card.time}
                       index={index}
                       cards={cards}
-                      listId={card.listId}
+                      name={name}
+                      email={email}
                     />
                   </Grid>
                 )}

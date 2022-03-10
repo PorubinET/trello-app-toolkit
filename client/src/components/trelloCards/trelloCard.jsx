@@ -1,6 +1,5 @@
 import React from "react";
 import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from "styled-components"
@@ -13,7 +12,7 @@ const CardContainer = styled.div`
   margin-bottom: 8px;
 `
 
-const TrelloCard = ({ text, id, index, listId }) => {
+const TrelloCard = ({ text, id, index, listId, desc, name, email, time }) => {
   return (
     <Draggable draggableId={String(id)} index={index}>
       {provided => (
@@ -25,15 +24,16 @@ const TrelloCard = ({ text, id, index, listId }) => {
           <Card>
             <Grid>
               <CardContent className="card__content">
-                <Typography>
-                    <span className="card__text-wrapp">{text}</span>
-                </Typography>
                 <FormDialog
                   key={id}
                   text={text}
                   id={id}
                   index={index}
                   listId={listId}
+                  desc={desc}
+                  name={name}
+                  email={email}
+                  time={time}
                 />
               </CardContent>
             </Grid>

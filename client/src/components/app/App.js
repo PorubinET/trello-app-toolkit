@@ -51,6 +51,8 @@ function App() {
                 key={list.listId}
                 title={list.title}
                 cards={list.cards}
+                name={list.name}
+                email={list.email}
                 index={index}
               />
             )}

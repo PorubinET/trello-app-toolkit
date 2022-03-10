@@ -13,6 +13,7 @@ function TrelloActionButton(props) {
 
     let [formOpen, setForm] = useState(true)
     let [text, setText] = useState("")
+    let time = new Date()
 
     const { list, _id } = props
     const dispatch = useDispatch();
@@ -59,7 +60,7 @@ function TrelloActionButton(props) {
 
     const createCard = (e) => {
         e.preventDefault();
-        dispatch(addCard({_id, text}))
+        dispatch(addCard({_id, text, time}))
     }
 
     const styles = {

@@ -1,80 +1,108 @@
-import {createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 
 let listId = 3;
 let _id = 10;
 
-  export const listsSlice = createSlice({
+export const listsSlice = createSlice({
     name: 'lists',
     initialState: {
         lists: [
             {
+                name: "Jon",
+                email: "user@mail.ru",
                 title: "IN PROGRESS",
                 listId: 0,
                 cards: [
                     {
                         listId: 0,
                         id: `card-${0}`,
-                        text: "class "
+                        text: "class ",
+                        description: "description 1",
+                        time: "16.05.2008"
                     },
                     {
                         listId: 0,
                         id: `card-${1}`,
-                        text: "created static 2"
+                        text: "created static 2",
+                        description: "description 2",
+                        time: "16.05.2008"
                     },
                     {
                         listId: 0,
                         id: `card-${2}`,
-                        text: "created static 3"
+                        text: "created static 3",
+                        description: "description 3",
+                        time: "16.05.2008"
                     },
                 ]
             },
             {
+                name: "Jon",
+                email: "user@mail.ru",
                 title: "TO DO",
                 listId: 1,
                 cards: [
                     {
                         listId: 1,
                         id: `card-${3}`,
-                        text: "created static 1"
+                        text: "created static 1",
+                        description: "description 1",
+                        time: "16.05.2008"
                     },
                     {
                         listId: 1,
                         id: `card-${4}`,
-                        text: "created static 2"
+                        text: "created static 2",
+                        description: "description 2",
+                        time: "16.05.2008"
                     },
                     {
                         listId: 1,
                         id: `card-${5}`,
-                        text: "created static 3"
+                        text: "created static 3",
+                        description: "description 3",
+                        time: "16.05.2008"
                     },
                     {
-                        listId: 1,
+                        listId: 1, 
                         id: `card-${6}`,
-                        text: "created static 4"
+                        text: "created static 4",
+                        description: "description 4",
+                        time: "16.05.2008"
                     },
                     {
                         listId: 1,
                         id: `card-${7}`,
-                        text: "created static 5"
+                        text: "created static 5",
+                        description: "description 5",
+                        time: "16.05.2008"
                     }
                 ]
             },
             {
+                name: "Jon",
+                email: "user@mail.ru",
                 title: "TO DO2",
                 listId: 2,
                 cards: [
                     {
                         listId: 2,
+                        email: "user@mail.ru",
                         id: `card-${8}`,
-                        text: "created static 1"
+                        text: "created static 6",
+                        description: "description 6",
+                        time: "16.05.2008"
                     },
                     {
                         listId: 2,
+                        email: "user@mail.ru",
                         id: `card-${9}`,
-                        text: "created static 2"
+                        text: "created static 7",
+                        description: "description 7",
+                        time: "16.05.2008"
                     },
-    
+
                 ]
             },
         ]
@@ -111,7 +139,7 @@ let _id = 10;
             }
         },
 
-        addList(state, action){
+        addList(state, action) {
             const newList = {
                 title: action.payload.text,
                 listId: listId,
@@ -122,34 +150,45 @@ let _id = 10;
         },
 
         addCard(state, action) {
+            console.log(action.payload.time)
+            
             const newCard = {
                 text: action.payload.text,
                 id: `card-${_id}`,
+                data: action.payload.time
             }
             _id += 1
 
             const newState = state.lists.map(list => {
-                if (list.listId ===  action.payload._id) {
+                if (list.listId === action.payload._id) {
                     return { ...list, cards: [...list.cards, newCard] }
                 }
                 else return list
             })
             return { lists: newState }
         },
-        
+
         changeCardText(state, action) {
-            let copy = {...state}
-            let newTextCard = copy.lists[action.payload.listId].cards.map(card => ({ ...card, 
-                text: card.id === action.payload.id ? action.payload.text : card.text}))
-            state.lists[action.payload.listId].cards = newTextCard
+            state.lists[action.payload.listId].cards = state.lists[action.payload.listId].cards.map(card => ({
+                ...card,
+                text: card.id === action.payload.id ? action.payload.text : card.text
+            }))
+        },
+
+        changeCardDesc(state, action) {
+            state.lists[action.payload.listId].cards = state.lists[action.payload.listId].cards.map(card => ({
+                ...card,
+                desc: card.id === action.payload.id ? action.payload.desc : card.desc
+            }))
         },
 
         changeListTitle(state, action) {
-            state.lists.map(list => ({...list, title: list === action.payload._id ? action.payload.titleText : list.title}))
+            let newText = state.lists.map(list => ({ ...list, title: list.listId === action.payload._id ? action.payload.titleText : list.title }))
+            console.log(newText)
         }
     },
 })
 
-export const { addList, addCard, sort, changeCardText, changeListTitle } = listsSlice.actions
+export const { addList, addCard, sort, changeCardText, changeCardDesc, changeListTitle } = listsSlice.actions
 export default listsSlice.reducer;
 

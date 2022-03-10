@@ -6,22 +6,38 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
-import { changeCardText } from "../../store/listsSlice"
+import { Grid } from "@mui/material";
+import { changeCardText, changeCardDesc } from "../../store/listsSlice"
+import Typography from '@mui/material/Typography';
 
 
-export default function FormDialog({ text, id, listId }) {
+import CardHeader from '@mui/material/CardHeader';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import { red } from '@mui/material/colors';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-  console.log(listId, "listId")
+
+import "./dialogs.scss"
+
+export default function FormDialog({ text, id, listId, desc, name, email, time }) {
+  console.log(time)
 
   const [open, setOpen] = React.useState(false);
-  let [textCard, setTextCards] = useState(text);
+  let [textCard, setTextCard] = useState(text);
+  let [descCard, setDescCard] = useState(desc);
+  let [members, setMembers] = useState(false)
+
   const dispatch = useDispatch();
 
   const changeText = (e) => {
-    setTextCards(textCard = e.target.value)
+    setTextCard(textCard = e.target.value)
+  }
+
+  const changeDesc = (e) => {
+    setDescCard(textCard = e.target.value)
   }
 
   const handleClickOpen = () => {
@@ -35,26 +51,26 @@ export default function FormDialog({ text, id, listId }) {
   const handleKeyDown = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault()
-      dispatch(changeCardText({ id, listId, text: textCard }))
-      handleClose()
+      setDate()
     }
   }
 
-  const setText = () => {
+  const setDate = () => {
     dispatch(changeCardText({ id, listId, text: textCard }))
+    dispatch(changeCardDesc({ id, listId, desc: descCard }))
     handleClose()
   }
 
   return (
     <div>
-      <EditIcon className="card__icon" onClick={handleClickOpen} />
+      <EditIcon className="card__icon" />
+      <div className="card__wrapp" onClick={handleClickOpen}></div>
+      <Typography>
+        <span className="card__text-wrapp">{text}</span>
+      </Typography>
+
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText>
+        <DialogTitle> 
           <TextField
             autoFocus
             margin="dense"
@@ -66,11 +82,47 @@ export default function FormDialog({ text, id, listId }) {
             value={textCard}
             onKeyDown={handleKeyDown}
             onChange={changeText}
+            style={{ width: "30%" }}
           />
+          </DialogTitle>
+       
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                R
+              </Avatar>
+            }
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={name}
+            subheader={email}
+          />
+
+        <DialogContent style={{ width: 550 }}>
+         
+          <Grid
+            marginTop={2}
+            display="flex"
+            justifyContent="center">
+            <TextField
+              type="text"
+              onChange={changeDesc}
+              id="outlined-basic"
+              label="Description"
+              variant="outlined"
+              value={descCard}
+              style={{ width: "100%" }}
+              multiline
+            />
+          </Grid>
         </DialogContent>
+          <span className='dialogs__time'>{time}</span>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={setText}>Subscribe</Button>
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={setDate}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>
